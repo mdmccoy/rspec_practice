@@ -6,5 +6,14 @@ feature "Visiting root" do
     expect(current_path).to eq('/register')
   end
 
-  it 'when logged in shows a welcome message'
+  it 'when logged in shows a welcome message' do
+    user = User.create(name: "Example Name", email: "Example@example.com", password: 'password')
+    visit login_path
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
+    click_button 'Login'
+
+    expect(current_path).to eq(root_path)
+    expect(page).to have_content('Welcome')
+  end
 end
